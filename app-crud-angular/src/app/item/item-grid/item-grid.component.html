@@ -1,0 +1,32 @@
+<p-table [value]="items" [paginator]="true" [rows]="5" [scrollable]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="col-btns"></th>
+            <th class="col-name">Nome</th>
+            <th class="col-unit">Unidade de Medida</th>
+            <th class="col-qtd">Quantidade</th>
+            <th class="col-price">Preço</th>
+            <th class="col-perecible">Perecível</th>
+            <th class="col-dt">Data de Fabricação</th>
+            <th class="col-dt">Data de Validade</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td class="col-content-btns">
+                <p-button class="btn-editar" icon="pi pi-pencil" pTooltip="Editar" [routerLink]="['/itens', item.id]" tooltipPosition="bottom"></p-button>
+                <p-button icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="bottom" (onClick)="handleDelete(item)"></p-button>
+            </td>
+            <td class="col-content-name">{{item.name | titlecase}}</td>
+            <td class="col-content-unit">{{item.unit.value | lowercase}}</td>
+            <td class="col-content-qtd">{{item.quantity}}</td>
+            <td class="col-content-price">{{item.price | currency:'BRL':'symbol':'1.2-2'}}</td>
+            <td class="col-content-perecible">{{item.perecible ? 'Sim' : 'Não'}}</td>
+            <td class="col-content-dt">{{item.dateFabricate | date: 'dd/MM/yyyy'}}</td>
+            <td class="col-content-dt">{{item.dateValidate | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        Nenhum registro encrontado.
+    </ng-template>
+</p-table>

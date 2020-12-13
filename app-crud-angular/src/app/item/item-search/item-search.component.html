@@ -1,0 +1,27 @@
+<div class="container">
+    <p-confirmDialog [style]="{width: '425px'}"></p-confirmDialog>
+    <p-toast [style]="{marginTop: '50px'}"></p-toast>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-fluid">
+            <h1>Consultar Itens</h1>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <button pButton type="button" label="Novo item" routerLink="/itens/novo"></button>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12 ui-fluid">
+            <input type="text" [ngModel]="inputSearch" (ngModelChange)="getItemsByName($event)" pInputText placeholder="Buscar itens..." />
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <app-item-grid (delete)="dialogDelete($event)" [items]="items"></app-item-grid>
+        </div>
+    </div>
+</div>

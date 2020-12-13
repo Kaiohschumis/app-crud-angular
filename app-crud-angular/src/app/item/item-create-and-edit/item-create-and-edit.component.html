@@ -1,0 +1,72 @@
+<div class="container">
+    <p-toast [style]="{marginTop: '50px'}"></p-toast>
+    <form autocomplete="false" [formGroup]="itemForm" (ngSubmit)="onSubmit(itemForm.value)">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-fluid">
+                <h1>Adicionar novo Item</h1>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-12 ui-lg-9 ui-md-12 ui-sm-12 ui-fluid">
+                <label>Nome :</label>
+                <input type="text" pInputText formControlName="name" maxlength="50" pattern="[a-zA-Z-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*" />
+
+                <p-message severity="error" [text]="itemForm.controls['name'].errors['required'] ? 'Nome é obrigatório' : itemForm.controls['name'].errors['pattern'] ? 'Só é permitido letras para esse campo' : ''" *ngIf="!itemForm.controls['name'].valid&&itemForm.controls['name'].dirty"></p-message>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-12 ui-lg-3 ui-md-6 ui-sm-12 ui-fluid">
+                <label>Unidade de medida :</label>
+                <p-dropdown [autoWidth]="false" [options]="units" formControlName="unit"></p-dropdown>
+                <p-message severity="error" text="Unidade de medida é obrigatória" *ngIf="!itemForm.controls['unit'].valid&&itemForm.controls['unit'].dirty"></p-message>
+            </div>
+
+            <div class="ui-g-12 ui-lg-3 ui-md-6 ui-sm-12 ui-fluid">
+                <label>Quantidade:</label>
+                <div class="ui-inputgroup">
+                    <input type="text" pInputText type="number" formControlName="quantity" />
+                    <span class="ui-inputgroup-addon">{{itemForm.controls['unit'].value ? itemForm.controls['unit'].value.value.toLowerCase() : ''}}</span>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-lg-3 ui-md-12 ui-sm-12 ui-fluid">
+                <label>Perecível :</label>
+                <div class="ui-g" class="displayInline">
+                    <p-radioButton name="perecible" [value]="true" (onClick)="changePerecible()" label="Sim" formControlName="perecible"></p-radioButton>
+                    <p-radioButton name="perecible" [value]="false" label="Não" (onClick)="changePerecible()" formControlName="perecible"></p-radioButton>
+                </div>
+                <p-message severity="error" text="A seleção do campo Perecível é obrigatória" *ngIf="!itemForm.controls['perecible'].valid&&itemForm.controls['perecible'].dirty"></p-message>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-12 ui-lg-3 ui-md-6 ui-sm-12 ui-fluid">
+                <label>Preço :</label>
+                <input pInputText currencyMask formControlName="price" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+                <p-message severity="error" text="Preço é obrigatório" *ngIf="!itemForm.controls['price'].valid&&itemForm.controls['price'].dirty"></p-message>
+            </div>
+
+            <div class="ui-g-12 ui-lg-3 ui-md-6 ui-sm-12 ui-fluid">
+                <label>Data de fabricação :</label>
+                <p-calendar formControlName="dateFabricate" dateFormat="dd/mm/yy" [readonlyInput]="false"></p-calendar>
+                <p-message severity="error" text="Data de fabricação é obrigatória" *ngIf="!itemForm.controls['dateFabricate'].valid&&itemForm.controls['dateFabricate'].dirty"></p-message>
+            </div>
+
+            <div class="ui-g-12 ui-lg-3 ui-md-6 ui-sm-12 ui-fluid">
+                <label>Data de validade{{itemForm.controls['perecible'].value ? ' *:': ':' }}</label>
+                <p-calendar formControlName="dateValidate" dateFormat="dd/mm/yy" [readonlyInput]="false"></p-calendar>
+                <p-message severity="warn" text="O item encontra-se vencido" *ngIf="itemVencid(itemForm.controls['dateValidate'].value)"></p-message>
+                <p-message severity="error" text="Data de validade é obrigatória quando o produto é perecível" *ngIf="!itemForm.controls['dateValidate'].valid&&itemForm.controls['dateValidate'].dirty"></p-message>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <button pButton type="button" routerLink="/itens" label="Cancelar" class="ui-button-secondary"></button>
+                <button pButton type="submit" style="margin-right: 10px" [disabled]="formInvalid()" label="Salvar" class="ui-button-info"></button>
+            </div>
+        </div>
+    </form>
+</div>
